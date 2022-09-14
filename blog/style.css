@@ -1,16 +1,46 @@
-.container {
-    width: 1024px;
-    margin: 0 auto;
-    text-align: center;
-}
-.job {
-    border: 1px solid grey;
-    padding: 10px;
-    width: 400px;
-    margin: 0 auto;
-    text-align: left;
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #404092;
+    height: 62px;
 }
 
-.job ~ .job {
+.nav a {
+    display: inline-block;
+    padding: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav h1 {
+    display: inline-block;
+    color: #fff;
+    margin: 0 20px;
+}
+
+.nav a.active, .nav a:hover {
+    background: #6c6cd0;
+}
+
+.container {
+    margin-top: 80px;
+}
+
+.container p {
+    white-space: pre-line;
+}
+
+.article {
+    border: 1px solid grey;
+}
+
+.article ~ .article {
     margin-top: 20px;
+}
+
+.article a {
+    text-decoration: none;
+    color: #000;
 }
