@@ -1,12 +1,20 @@
 <?php
     require_once('conn.php');
 
-    if (empty($_POST['nickname']) || empty($_POST['content'])) {
+    if (empty($_POST['content'])) {
 		header("Location: ./index.php?errCode=1");
 		die('資料不齊');
 	}
 
-	$nickname = $_POST['nickname'];
+	$username = $_COOKIE['username'];
+	$user_sql = sprintf(
+		'SELECT nickname FROM users WHERE username="%s"',
+		$username
+	);
+	$user_result = $conn->query($user_sql);
+	$row = $user_result->fetch_assoc();
+
+	$nickname = $row['nickname'];
 	$content = $_POST['content'];
 
 	// 新增資料

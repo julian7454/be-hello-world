@@ -6,6 +6,10 @@
     if (!$result) {
       die('ERROR:' . $conn->error);
     }
+    $username = NULL;
+    if (!empty($_COOKIE['username'])) {
+      $username = $_COOKIE['username'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,8 +23,12 @@
     <!-- <strong>注意！本站為練習用網站，因教學用途刻意忽略資安的實作，註冊時請勿使用任何真實的帳號或密碼。</strong> -->
   </header>
   <main class="board">
-      <a class="board_btn" href="register.php">註冊</a>
-      <a class="board_btn" href="login.php">登入</a>
+      <?php if (!$username) { ?>
+        <a class="board_btn" href="register.php">註冊</a>
+        <a class="board_btn" href="login.php">登入</a>
+      <?php } else { ?>
+        <a class="board_btn" href="logout.php">登出</a>
+      <?php } ?>
       <h1 class="board__title">Comments</h1>
       <?php
         $msg = 'error';
@@ -33,14 +41,18 @@
           echo '<h4 class="error">' . $msg . '</h4>';
         }
       ?>
-      <form class="board__new-comment-form" method="POST" action="handle_add_comment.php">
-        <div class="board__nickname">
-          <span>暱稱：</span>
-          <input type="text" name="nickname" />
-        </div>
-        <textarea name="content" rows="5"></textarea>
-        <input class="board__submit-btn" type="submit" />
-      </form>
+      <?php if ($username) { ?>
+        <form class="board__new-comment-form" method="POST" action="handle_add_comment.php">
+          <!-- <div class="board__nickname">
+            <span>暱稱：</span>
+            <input type="text" name="nickname" />
+          </div> -->
+          <textarea name="content" rows="5"></textarea>
+          <input class="board__submit-btn" type="submit" />
+        </form>
+      <?php } else { ?>
+        <p>請登入發布留言</p>
+      <?php } ?>
       <div class="board__hr"></div>
       <section>
         <?php
