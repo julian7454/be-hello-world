@@ -19,9 +19,9 @@
     <!-- <strong>注意！本站為練習用網站，因教學用途刻意忽略資安的實作，註冊時請勿使用任何真實的帳號或密碼。</strong> -->
   </header>
   <main class="board">
-      <a class="board_btn" href="register.php">註冊</a>
+      <a class="board_btn" href="index.php">回留言板</a>
       <a class="board_btn" href="login.php">登入</a>
-      <h1 class="board__title">Comments</h1>
+      <h1 class="board__title">註冊</h1>
       <?php
         $msg = 'error';
         if (!empty($_GET['errCode'])) {
@@ -30,37 +30,30 @@
             $msg = '資料不齊全';
           }
 
+          if ($_GET['errCode'] === '2') {
+            $msg = '帳號已被註冊';
+          }
+
           echo '<h4 class="error">' . $msg . '</h4>';
         }
       ?>
-      <form class="board__new-comment-form" method="POST" action="handle_add_comment.php">
+      <form class="board__new-comment-form" method="POST" action="handle_register.php">
         <div class="board__nickname">
           <span>暱稱：</span>
           <input type="text" name="nickname" />
         </div>
-        <textarea name="content" rows="5"></textarea>
+        <div class="board__nickname">
+          <span>帳號：</span>
+          <input type="text" name="username" />
+        </div>
+        <div class="board__nickname">
+          <span>密碼：</span>
+          <input type="password" name="password" />
+        </div>
         <input class="board__submit-btn" type="submit" />
       </form>
       <div class="board__hr"></div>
-      <section>
-        <?php
-            while($row = $result->fetch_assoc()) {
-        ?>
-        <div class="card">
-          <div class="card__avatar">
-          </div>
-          <div class="card__body">
-              <div class="card__info">
-                <span class="card__author"><?php echo $row['nickname']; ?></span>
-                <span class="card__time"><?php echo $row['created_at']; ?></span>
-              </div>
-              <p class="card__content">
-                <?php echo $row['content']; ?>
-              </p>
-          </div>
-        </div>
-        <?php } ?>
-      </section>
+
   </main>
 </body>
 </html>

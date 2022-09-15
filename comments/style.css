@@ -39,7 +39,7 @@ body {
   padding: 5px;
 }
 
-.board__submit-btn {
+.board__submit-btn, .board_btn {
   padding: 10px;
   border: 1px solid #c2dffb;
   border-radius: 5px;
@@ -54,6 +54,14 @@ body {
   height: 2px;
   background: #e8e8e8;
   max-width: 95%;
+}
+
+.board_btn {
+  padding: 10px 30px;
+  text-decoration: none;
+  color: #000;
+  display: inline-block;
+  width: auto;
 }
 
 .card {
