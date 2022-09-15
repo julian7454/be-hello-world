@@ -1,10 +1,14 @@
 <?php
     require_once('conn.php');
+	require_once('utils.php');
 
     if (empty($_POST['content'])) {
 		header("Location: ./index.php?errCode=1");
 		die('資料不齊');
 	}
+
+	$user = getUserFromToken($_COOKIE['token']);
+	$nickname = $user['nickname'];
 
 	$username = $_COOKIE['username'];
 	$user_sql = sprintf(
@@ -14,7 +18,6 @@
 	$user_result = $conn->query($user_sql);
 	$row = $user_result->fetch_assoc();
 
-	$nickname = $row['nickname'];
 	$content = $_POST['content'];
 
 	// 新增資料

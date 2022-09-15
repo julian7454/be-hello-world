@@ -1,15 +1,19 @@
 <?php
     require_once('./conn.php');
+    require_once('./utils.php');
+
+    $username = NULL;
+    if (!empty($_COOKIE['token'])) {
+      $user = getUserFromToken($_COOKIE['token']);
+      $username = $user['username'];
+    }
 
     $result = $conn->query("SELECT * FROM comments order by id desc");
 
     if (!$result) {
       die('ERROR:' . $conn->error);
     }
-    $username = NULL;
-    if (!empty($_COOKIE['username'])) {
-      $username = $_COOKIE['username'];
-    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +32,7 @@
         <a class="board_btn" href="login.php">登入</a>
       <?php } else { ?>
         <a class="board_btn" href="logout.php">登出</a>
+        <h3>你好！<?php echo $username; ?></h3>
       <?php } ?>
       <h1 class="board__title">Comments</h1>
       <?php
