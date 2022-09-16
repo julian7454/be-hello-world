@@ -1,39 +1,39 @@
 <?php
-	session_start();
+    session_start();
     require_once('conn.php');
-	require_once('utils.php');
+    require_once('utils.php');
 
     if (empty($_POST['content'])) {
-		header("Location: ./index.php?errCode=1");
-		die('資料不齊');
-	}
+        header("Location: ./index.php?errCode=1");
+        die('資料不齊');
+    }
 
-	$user = getUserFromUsername($_SESSION['username']);
-	$nickname = $user['nickname'];
+    $user = getUserFromUsername($_SESSION['username']);
+    $nickname = $user['nickname'];
 
-	$username = $_COOKIE['username'];
-	$user_sql = sprintf(
-		'SELECT nickname FROM users WHERE username="%s"',
-		$username
-	);
-	$user_result = $conn->query($user_sql);
-	$row = $user_result->fetch_assoc();
+    $username = $_COOKIE['username'];
+    $user_sql = sprintf(
+        'SELECT nickname FROM users WHERE username="%s"',
+        $username
+    );
+    $user_result = $conn->query($user_sql);
+    $row = $user_result->fetch_assoc();
 
-	$content = $_POST['content'];
+    $content = $_POST['content'];
 
-	// 新增資料
-	$sql = sprintf(
-		"INSERT INTO comments(nickname, content) VALUES('%s', '%s')",
-		$nickname,
-		$content,
-	);
-	// echo 'SQL: ' . $sql . '<br>';
-	$result = $conn->query($sql);
-	if (!$result) {
-		die($conn->error);
-	}
+    // 新增資料
+    $sql = sprintf(
+        "INSERT INTO comments(nickname, content) VALUES('%s', '%s')",
+        $nickname,
+        $content,
+    );
+    // echo 'SQL: ' . $sql . '<br>';
+    $result = $conn->query($sql);
+    if (!$result) {
+        die($conn->error);
+    }
 
-	// echo('success');
+    // echo('success');
     header("Location: ./index.php");
 ?>
 
