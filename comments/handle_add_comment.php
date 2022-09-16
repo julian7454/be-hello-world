@@ -1,4 +1,5 @@
 <?php
+	session_start();
     require_once('conn.php');
 	require_once('utils.php');
 
@@ -7,7 +8,7 @@
 		die('資料不齊');
 	}
 
-	$user = getUserFromToken($_COOKIE['token']);
+	$user = getUserFromUsername($_SESSION['username']);
 	$nickname = $user['nickname'];
 
 	$username = $_COOKIE['username'];
