@@ -13,9 +13,8 @@
 
 	// 新增資料
 	$sql = sprintf(
-		"SELECT * FROM users WHERE username='%s' AND PASSWORD='%s'",
+		"SELECT * FROM users WHERE username='%s'",
 		$username,
-        $password,
 	);
 
 	$result = $conn->query($sql);
@@ -23,8 +22,14 @@
 		die($conn->error);
 	}
 
-    // print_r($result);
-    if ($result->num_rows) {
+    if ($result->num_rows === 0) {
+        header("Location: login.php?errCode=2");
+        exit();
+    }
+
+    $row = $result->fetch_assoc();
+    // 密碼驗證
+    if (password_verify($password, $row['password'])) {
         /*
             1. 產生 session id (token)
             2. 把 username 寫入檔案

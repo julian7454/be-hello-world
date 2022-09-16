@@ -1,4 +1,5 @@
 <?php
+	session_start();
     require_once('conn.php');
 
     if (empty($_POST['nickname']) || empty($_POST['username']) || empty($_POST['password'])) {
@@ -8,7 +9,7 @@
 
 	$nickname = $_POST['nickname'];
 	$username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 	// 新增資料
 	$sql = sprintf(
@@ -33,6 +34,6 @@
 		die($conn->error);
 	}
 
-	// echo('success');
+	$_SESSION['username'] = $username;
     header("Location: ./index.php");
 ?>
