@@ -12,14 +12,11 @@
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 	// 新增資料
-	$sql = sprintf(
-		"INSERT INTO users(nickname, username, password) VALUES('%s', '%s', '%s')",
-		$nickname,
-		$username,
-        $password,
-	);
+	$sql = "INSERT INTO users(nickname, username, password) VALUES(?, ?, ?)";
+	$stmt = $conn->prepare($sql);
+	$stmt->bind_param("sss", $nickname, $username, $password);
+	$result = $stmt->execute();
 
-	$result = $conn->query($sql);
 	if (!$result) {
         // dir 需拼接成字串才會顯示
         $code = $conn->errno;

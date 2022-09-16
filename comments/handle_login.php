@@ -12,16 +12,16 @@
     $password = $_POST['password'];
 
 	// 新增資料
-	$sql = sprintf(
-		"SELECT * FROM users WHERE username='%s'",
-		$username,
-	);
+	$sql = "SELECT * FROM users WHERE username=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+	$result = $stmt->execute();
 
-	$result = $conn->query($sql);
 	if (!$result) {
 		die($conn->error);
 	}
-
+    // 多一個取值步驟
+    $result = $stmt->get_result();
     if ($result->num_rows === 0) {
         header("Location: login.php?errCode=2");
         exit();

@@ -22,13 +22,11 @@
     $content = $_POST['content'];
 
     // 新增資料
-    $sql = sprintf(
-        "INSERT INTO comments(nickname, content) VALUES('%s', '%s')",
-        $nickname,
-        $content,
-    );
-    // echo 'SQL: ' . $sql . '<br>';
-    $result = $conn->query($sql);
+    $sql = "INSERT INTO comments(nickname, content) VALUES(?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ss', $nickname, $content);
+    $result = $stmt->execute();
+
     if (!$result) {
         die($conn->error);
     }
