@@ -13,7 +13,13 @@
       $username = $_SESSION['username'];
       $user = getUserFromUsername($username);
     }
-    $stmt = $conn->prepare("SELECT * FROM comments order by id desc");
+    $stmt = $conn->prepare(
+      "SELECT " .
+      "C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username " .
+      "FROM comments as C " .
+      "left join users as U on C.username = U.username " .
+      "order by id desc"
+    );
     $result = $stmt->execute();
 
     if (!$result) {
@@ -84,7 +90,10 @@
           </div>
           <div class="card__body">
               <div class="card__info">
-                <span class="card__author"><?php echo escape($row['nickname']); ?></span>
+                <span class="card__author">
+                  <?php echo escape($row['nickname']); ?>
+                  (@<?php echo escape($row['username']); ?>)
+                </span>
                 <span class="card__time"><?php echo escape($row['created_at']); ?></span>
               </div>
               <p class="card__content">

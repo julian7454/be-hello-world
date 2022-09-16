@@ -8,15 +8,13 @@
         die('資料不齊');
     }
 
-    $user = getUserFromUsername($_SESSION['username']);
-    $nickname = $user['nickname'];
-
+    $username = $_SESSION['username'];
     $content = $_POST['content'];
 
     // 新增資料
-    $sql = "INSERT INTO comments(nickname, content) VALUES(?, ?)";
+    $sql = "INSERT INTO comments(username, content) VALUES(?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $nickname, $content);
+    $stmt->bind_param('ss', $username, $content);
     $result = $stmt->execute();
 
     if (!$result) {
