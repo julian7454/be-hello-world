@@ -18,6 +18,7 @@
       "C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username " .
       "FROM comments as C " .
       "left join users as U on C.username = U.username " .
+      "WHERE C.is_deleted IS NULL " .
       "order by id desc"
     );
     $result = $stmt->execute();
@@ -96,7 +97,8 @@
                 </span>
                 <span class="card__time"><?php echo escape($row['created_at']); ?></span>
                 <?php if ($row['username'] === $username) { ?>
-                <a href="update_comment.php?id=<?php echo $row['id']; ?>">編輯</a>
+                <a href="update_comment.php?id=<?php echo $row['id']; ?>">編輯 </a>
+                <a href="delete_comment.php?id=<?php echo $row['id']; ?>">刪除</a>
                 <?php } ?>
               </div>
               <p class="card__content">
