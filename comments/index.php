@@ -13,14 +13,24 @@
       $username = $_SESSION['username'];
       $user = getUserFromUsername($username);
     }
+
+    $page = 1;
+    if (!empty($_GET['page'])) {
+      $page = intval($_GET['page']);
+    }
+    $items_per_page = 5; // limit
+    $offset = ($page - 1) * $items_per_page;
+
     $stmt = $conn->prepare(
       "SELECT " .
       "C.id as id, C.content as content, C.created_at as created_at, U.nickname as nickname, U.username as username " .
       "FROM comments as C " .
       "left join users as U on C.username = U.username " .
       "WHERE C.is_deleted IS NULL " .
-      "order by id desc"
+      "order by id desc " .
+      "limit ? offset ? "
     );
+    $stmt->bind_param('ii', $items_per_page, $offset);
     $result = $stmt->execute();
 
     if (!$result) {
@@ -108,6 +118,33 @@
         </div>
         <?php } ?>
       </section>
+      <?php
+        $stmt = $conn->prepare(
+          "SELECT count(id) as count from comments where is_deleted is null"
+        );
+
+        $result = $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $count = $row['count'];
+        $total_page = ceil($count / $items_per_page);
+      ?>
+      <div class="page-info">
+        <span>總共有 <?php echo $count ?> 筆資料，頁數：</span>
+        <span><?php echo $page ?> / <?php echo $total_page ?></span>
+        分頁
+      </div>
+      <div class="paginator">
+
+        <?php if ($page !== 1) { ?>
+          <a href="index.php?page=1">第一頁</a>
+          <a href="index.php?page=<?php echo $page - 1 ?>">上一頁</a>
+        <?php } ?>
+        <?php if ($page != $total_page) { ?>
+          <a href="index.php?page=<?php echo $page + 1 ?>">下一頁</a>
+          <a href="index.php?page=<?php echo $total_page ?>">最末頁</a>
+        <?php } ?>
+      </div>
   </main>
   <script>
     var btn = document.querySelector('.update-nickname')
