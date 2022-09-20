@@ -12,9 +12,9 @@
     $id = $_POST['id'];
     $content = $_POST['content'];
 
-    $sql = "update comments set content=? where id=?";
+    $sql = "update comments set content=? where id=? and username=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $content, $id);
+    $stmt->bind_param('sss', $content, $id, $username);
     $result = $stmt->execute();
 
     if (!$result) {

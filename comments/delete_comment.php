@@ -8,11 +8,12 @@
         die('資料不齊');
     }
 
+    $username = $_SESSION['username'];
     $id = $_GET['id'];
 
-    $sql = "update comments set is_deleted=1 where id=?";
+    $sql = "update comments set is_deleted=1 where id=? and username=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $id);
+    $stmt->bind_param('ss', $id, $username);
     $result = $stmt->execute();
 
     if (!$result) {
